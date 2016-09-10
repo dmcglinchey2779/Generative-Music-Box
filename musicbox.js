@@ -1,12 +1,33 @@
 //add Controller musicbox.js
 
-window.onload = function () {
+window.onload = function() {
 
-  var canvas = document.getElementById('canvas');
-  var view = new View(canvas);
+    var bufferLoader = new BufferLoader(
+        Audio.audioContext,
+        [
+            "A4.mp3",
+            "A5.mp3",
+            "C4.mp3",
+            "C5.mp3",
+            "D4.mp3",
+            "D5.mp3",
+            "E4.mp3",
+            "E5.mp3",
+            "G4.mp3",
+            "G5.mp3",
+        ],
+        finishedLoading
+    );
+    bufferLoader.load();
 
- canvas.addEventListener("click", view.handleClick.bind(view), false);
+    function finishedLoading(bufferList) {
+        Audio.init(bufferList);
 
- setInterval(view.updateDisplay.bind(view), view.frameRate);
+        var canvas = document.getElementById("canvas");
+        var view = new View(canvas);
 
-}
+        canvas.addEventListener("mousedown", view.handleClick.bind(view), false);
+        setInterval(view.updateDisplay.bind(view), view.frameRate);
+    }
+
+};
